@@ -1,14 +1,19 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Alert from '../commonComponents/Alert';
 
 function SignIn() {
+//TODO REDIRIGIR SI YA TIENE SECIÖN INICIADA    
+    const navigate = useNavigate();
 
+    //Hooks
     const [email, setEmail] = useState('');
     // Constraseña no es almacenada en un hook por ser accesible con herramientas de desarrollo
     const [alert, setAlert] = useState({active: false, type:'', msg: ''});
 
+
+    //Event Handlers
     const handleEmail = ({target: {value}}) => {
         setEmail(value);
     }
@@ -47,6 +52,9 @@ function SignIn() {
 
         //Se almacena el token de sesión
         localStorage.setItem('cvToken', results.cvToken);
+
+        //Redirección a home
+        navigate('/');
     }
 
     return(

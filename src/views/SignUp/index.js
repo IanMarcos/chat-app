@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Alert from '../commonComponents/Alert';
-
+//TODO REDIRIGIR SI YA TIENE SECIÖN INICIADA
 function SignUp() {
 
+    const navigate = useNavigate();
+
+    //Hooks
     const [userData, setUserData] = useState({name:'', email:''});
     // Contraseña no es almacenada en un hook por ser accesible con herramientas de desarrollo
     const [alert, setAlert] = useState({active: false, type:'', msg: ''});
 
+    //Event Handlers
     const handleUserInput = ({ target: {name, value} }) => {
         /*El valor del nombre del <input> se guarda como la llave del objeto. Si el input tiene por nombre
         "email", entonces userData.email es actualizado con el value del target. 
@@ -25,9 +29,11 @@ function SignUp() {
         //Se extrae la contraseña del event
         const password = e.target[1].value;
 
+        const {name, email} = userData;
+
         //Verificación de campos diligenciados
-        if(userData.email.length === 0 || password.length === 0){
-            setAlert({ active: true, type:'warning', msg:'Ambos campos son obligatorios' });
+        if(email.length === 0 || password.length === 0){
+            setAlert({ active: true, type:'warning', msg:'Correo y contraseña son obligatorios' });
             setTimeout( () => setAlert({...alert, active:false}),3000 );
             return null;
         }
@@ -37,14 +43,23 @@ function SignUp() {
             ? 'http://localhost:8080/api/users/'
             : '';
 
-        // const response = await fetch(url, {
-        //     method:'POST',
-        //     body: JSON.stringify({email, password}),
-        //     headers: { 'Content-Type': 'application/json' }
-        // });
-        // const { results } = await response.json();
+        const response = await fetch(url, {
+            method:'POST',
+            body: JSON.stringify({name, email, password}),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const { results } = await response.json();
+        
+        //Se guarda el Jwt en el localSotrage para mantener la sesión
+        localStorage.setItem('cvToken', results.cvToken);
 
-        // TODO: Permanecer sesión iniciada
+        //Se muestra mensaje de creación exitosa
+        setAlert({ active: true, type:'success', msg:'Cuenta creada exitosamente' });
+        //Tras tres segundo se baja la alerta, y se redirige al home
+        setTimeout(() => {
+            setAlert({...alert, active:false});
+            navigate('/');
+        }, 3000);
     }
 
     return(
