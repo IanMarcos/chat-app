@@ -1,0 +1,49 @@
+.presentation{
+    opacity: 0;
+    animation-name: slide-fade;
+    animation-duration: 3s;
+    animation-delay: 1s;
+}
+
+@keyframes slide-fade {
+    0% {opacity: 0;}
+    25% {opacity: 1;}
+    75% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.finalSlide{
+    opacity: 0;
+    animation-name: fade;
+    animation-duration: 2s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.slide0{
+    font-size: 7rem;
+}
+
+.slide1{
+    width: 60%;
+    font-size: 4rem;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+.slide2{
+    
+}
+
+.slide3{
+    
+}
+
+.slide4{
+    
+}

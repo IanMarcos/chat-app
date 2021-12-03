@@ -13,10 +13,12 @@ function SignUp() {
     const { isSigned, setUser, signInOut } = useContext(userContext);
     const navigate = useNavigate();
 
+    /* eslint-disable */
     useEffect(() => {
         //Si al cargar el componente ya hay sesión iniciada, redirige al home
         if(isSigned || getCookie('cvToken')) navigate('/');
     }, [])
+    /* eslint-enable */
 
     //Event Handlers
     const handleUserInput = ({ target: {name, value} }) => {
