@@ -1,18 +1,20 @@
 import { createContext, useState } from 'react';
+import { getCookie } from '../../helpers/cookies';
 
 export const userContext = createContext();
 
 export default function UserProvider( {children} ) {
 
-    const initialName = localStorage.getItem('uName') || '';
+    const initialName = getCookie('uName') || '';
+    const initialSigned = initialName.length !== 0;
     const [userName, setUserName] = useState(initialName);
-    const [isSigned, setIsSigned] = useState(false);
+    const [isSigned, setIsSigned] = useState(initialSigned);
 
     const getUserInfo = async() => {
         const url = ( window.location.hostname.includes('localhost') )
         ? 'http://localhost:8080/api/auth/signin'
         : '';
-        const cvToken = localStorage.getItem('cvToken');
+        const cvToken = getCookie('cvToken');
 
         const response = await fetch(url, {
             method:'POST',

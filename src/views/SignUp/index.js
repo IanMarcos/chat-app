@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { userContext } from '../../context/userSession';
+import { createCookie, getCookie } from './../../helpers/cookies'
 import Alert from '../commonComponents/Alert';
 
 function SignUp() {
@@ -14,7 +15,7 @@ function SignUp() {
 
     useEffect(() => {
         //Si al cargar el componente ya hay sesión iniciada, redirige al home
-        if(isSigned || localStorage.getItem('cvToken')) navigate('/');
+        if(isSigned || getCookie('cvToken')) navigate('/');
     }, [])
 
     //Event Handlers
@@ -56,8 +57,8 @@ function SignUp() {
         const { results: {msg, cvToken, uName} } = await response.json();
         
         //Se guarda el Jwt en el localSotrage para mantener la sesión
-        localStorage.setItem('cvToken', cvToken);
-        localStorage.setItem('uName', uName);
+        createCookie('cvToken', cvToken);
+        createCookie('uName', uName);
 
         //Se actualizon los valores del context
         setUser(uName);

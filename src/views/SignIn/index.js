@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { userContext } from '../../context/userSession';
+import { createCookie, getCookie } from './../../helpers/cookies';
 
 import Alert from '../commonComponents/Alert';
 
@@ -15,7 +16,7 @@ function SignIn() {
 
     useEffect(() => {
         //Si al cargar el componente ya hay sesión iniciada, redirige al home
-        if(isSigned || localStorage.getItem('cvToken')) navigate('/');
+        if(isSigned || getCookie('cvToken')) navigate('/');
     }, [])
 
     //Event Handlers
@@ -56,8 +57,8 @@ function SignIn() {
         }
 
         //Se almacena el token de sesión - (Y el nombre en caso de refresh)
-        localStorage.setItem('cvToken', cvToken);
-        localStorage.setItem('uName', user.name)
+        createCookie('cvToken', cvToken);
+        createCookie('uName', user.name);
         //Se actualizon los valores del context
         setUser(user.name);
         signInOut();
