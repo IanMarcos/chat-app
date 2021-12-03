@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { userContext } from '../../context/userSession';
 
 import Alert from '../commonComponents/Alert';
 
-function SignIn() {
-//TODO REDIRIGIR SI YA TIENE SECIÖN INICIADA    
-    const navigate = useNavigate();
-
+function SignIn() {    
+    
     //Hooks
     const [email, setEmail] = useState('');
-    // Constraseña no es almacenada en un hook por ser accesible con herramientas de desarrollo
     const [alert, setAlert] = useState({active: false, type:'', msg: ''});
+    const { isSigned, setUser, signInOut } = useContext(userContext);
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        //Si al cargar el componente ya hay sesión iniciada, redirige al home
+        if(isSigned || localStorage.getItem('cvToken')) navigate('/');
+    }, [])
 
     //Event Handlers
     const handleEmail = ({target: {value}}) => {
@@ -33,7 +38,7 @@ function SignIn() {
 
         //Llamado a la API
         const url = ( window.location.hostname.includes('localhost') )
-            ? 'http://localhost:8080/api/auth/'
+            ? 'http://localhost:8080/api/auth/signin'
             : '';
 
         const response = await fetch(url, {
@@ -41,17 +46,21 @@ function SignIn() {
             body: JSON.stringify({email, password}),
             headers: { 'Content-Type': 'application/json' }
         });
-        const { results } = await response.json();
+        const { results: {err, cvToken, user} } = await response.json();
 
         //Verificación de email y contraseña correctos
-        if(results.err){
-            setAlert({ active: true, type:'danger', msg:results.err});
+        if(err){
+            setAlert({ active: true, type:'danger', msg:err});
             setTimeout( () => setAlert({...alert, active:false}),3000 );
             return null;
         }
 
-        //Se almacena el token de sesión
-        localStorage.setItem('cvToken', results.cvToken);
+        //Se almacena el token de sesión - (Y el nombre en caso de refresh)
+        localStorage.setItem('cvToken', cvToken);
+        localStorage.setItem('uName', user.name)
+        //Se actualizon los valores del context
+        setUser(user.name);
+        signInOut();
 
         //Redirección a home
         navigate('/');

@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { userContext } from '../../context/userSession';
 import Alert from '../commonComponents/Alert';
-//TODO REDIRIGIR SI YA TIENE SECIÖN INICIADA
+
 function SignUp() {
-
-    const navigate = useNavigate();
-
+    
     //Hooks
     const [userData, setUserData] = useState({name:'', email:''});
-    // Contraseña no es almacenada en un hook por ser accesible con herramientas de desarrollo
     const [alert, setAlert] = useState({active: false, type:'', msg: ''});
+    const { isSigned, setUser, signInOut } = useContext(userContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        //Si al cargar el componente ya hay sesión iniciada, redirige al home
+        if(isSigned || localStorage.getItem('cvToken')) navigate('/');
+    }, [])
 
     //Event Handlers
     const handleUserInput = ({ target: {name, value} }) => {
@@ -48,13 +53,18 @@ function SignUp() {
             body: JSON.stringify({name, email, password}),
             headers: { 'Content-Type': 'application/json' }
         });
-        const { results } = await response.json();
+        const { results: {msg, cvToken, uName} } = await response.json();
         
         //Se guarda el Jwt en el localSotrage para mantener la sesión
-        localStorage.setItem('cvToken', results.cvToken);
+        localStorage.setItem('cvToken', cvToken);
+        localStorage.setItem('uName', uName);
+
+        //Se actualizon los valores del context
+        setUser(uName);
+        signInOut();
 
         //Se muestra mensaje de creación exitosa
-        setAlert({ active: true, type:'success', msg:'Cuenta creada exitosamente' });
+        setAlert({ active: true, type:'success', msg });
         //Tras tres segundo se baja la alerta, y se redirige al home
         setTimeout(() => {
             setAlert({...alert, active:false});
