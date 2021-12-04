@@ -1,6 +1,6 @@
 import { useEffect, useState} from 'react'
 import styles from './style.module.css';
-// import Slide from './Slide';
+import { FinalSlide } from './Slide';
 import mongo from './../../../../assets/mongo.png'
 
 function DefaultView() {
@@ -10,9 +10,11 @@ function DefaultView() {
     const contents = [
         'Hola!',
         'Esta App fue hecha con el stack MERN',
-        mongo
+        mongo,
+        mongo,
+        'Para empezar, inicia sesión o regístrate'
     ];
-    const textStyles = [styles.slide0, styles.slide1, styles.slide2];
+    const textStyles = [styles.greeting, styles.longText, '', '', styles.longText];
     
     useEffect(() => {
         setIndex(0);
@@ -28,11 +30,11 @@ function DefaultView() {
         }
         setTimeout(() => {
             //Cada 4 segundos se actualiza el indice (para poder recorrer los contenidos y estilos), y la vista
-            if(index < contents.length){
+            if(index > 0 && index < contents.length){
                 setView(<Slide info={contents[index]} slideStyle={textStyles[index]}/>);
                 setIndex(index+1);
             } else {
-                setView(<div className={styles.finalSlide}>dasfasdg</div>);
+                setView(<FinalSlide/>);
             }
         }, 4000);
     }, [index]);
@@ -40,18 +42,21 @@ function DefaultView() {
 
     //Por algún motivo, cuando el componente es importado, la animación solo funciona la primera vez
     function Slide({info, slideStyle}) {
+        if( info.includes('.png') ){
+            return (
+                <div className={styles.presentation}>
+                    <img src={info} alt='Sorry uwu' className={"img-fluid"}/>
+                </div>
+            ) 
+        }
         return (
             <div className={`${styles.presentation} ${slideStyle}`}>
-                {!info.includes('.png')? info: <img src={info} alt='Sorry uwu'/>}
+                {info}
             </div>
         )
     }
 
-    return(
-        <>
-            {view}
-        </>
-    )
+    return(<>{view}</>);
 }
 
 export default DefaultView;

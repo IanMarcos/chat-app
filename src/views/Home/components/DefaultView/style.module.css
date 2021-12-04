@@ -13,6 +13,8 @@
 }
 
 .finalSlide{
+    width: 20rem;
+    height: auto;
     opacity: 0;
     animation-name: fade;
     animation-duration: 2s;
@@ -25,25 +27,21 @@
     to {opacity: 1;}
 }
 
-.slide0{
+.greeting{
     font-size: 7rem;
 }
 
-.slide1{
+.longText{
     width: 60%;
-    font-size: 4rem;
+    font-size: 3.8rem;
     text-align: center;
     overflow-wrap: break-word;
 }
 
-.slide2{
-    
-}
-
-.slide3{
-    
-}
-
-.slide4{
-    
+.border{
+    width: 100%;
+    border-style: solid;
+    border-width: 0.5rem;
+    border-radius: 5px;
+    border-color: rgb(230, 226, 197);
 }
