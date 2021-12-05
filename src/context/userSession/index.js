@@ -1,14 +1,12 @@
 import { createContext, useState } from 'react';
-import { getCookie } from '../../helpers/cookies';
+import { createCookie, getCookie, expireCookie } from '../../helpers/cookies';
 
 export const userContext = createContext();
 
 export default function UserProvider( {children} ) {
 
     const initialName = getCookie('uName') || '';
-    const initialSigned = initialName.length !== 0;
     const [userName, setUserName] = useState(initialName);
-    const [isSigned, setIsSigned] = useState(initialSigned);
 
     const getUserInfo = async() => {
         const url = ( window.location.hostname.includes('localhost') )
@@ -25,23 +23,29 @@ export default function UserProvider( {children} ) {
         const { results } = await response.json();
         console.log(results);
     }
-
-    const setUser = name => {
-        setUserName(name);
+    
+    const isSigned = () => {
+        return userName.length !== 0;
     }
     
-    const signInOut = () => {
-        //Si ya tiene sesión, entonces está saliendo de sesión, por lo tanto se borra su nombre
-        if(isSigned) setUserName('');
-        setIsSigned(!isSigned);
-    } 
+    const signIn = (name, token) => {
+        setUserName(name);
+        createCookie('uName', name);
+        createCookie('cvToken', token);
+    }
+
+    const signOut = () => {
+        setUserName('');
+        expireCookie('cvToken');
+        expireCookie('uName');
+    }
 
     return(
         <userContext.Provider value={{
             getUserInfo,
             isSigned,
-            setUser,
-            signInOut,
+            signIn,
+            signOut,
             userName
         }}>
             {children}

@@ -21,4 +21,10 @@ const getCookie = name => {
     return cookie;
 }
 
-export { createCookie, getCookie };
+const expireCookie = name => {
+    const cookie = getCookie(name);
+    if(!cookie) return;
+    createCookie(name, '',-1);
+}
+
+export { createCookie, expireCookie, getCookie };

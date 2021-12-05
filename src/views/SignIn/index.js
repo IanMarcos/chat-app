@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { userContext } from '../../context/userSession';
-import { createCookie, getCookie } from './../../helpers/cookies';
+import { getCookie } from './../../helpers/cookies';
 
 import Alert from '../commonComponents/Alert';
 
@@ -11,13 +11,13 @@ function SignIn() {
     //Hooks
     const [email, setEmail] = useState('');
     const [alert, setAlert] = useState({active: false, type:'', msg: ''});
-    const { isSigned, setUser, signInOut } = useContext(userContext);
+    const { isSigned, signIn } = useContext(userContext);
     const navigate = useNavigate();
 
     /* eslint-disable */
     useEffect(() => {
         //Si al cargar el componente ya hay sesión iniciada, redirige al home
-        if(isSigned || getCookie('cvToken')) navigate('/');
+        if(isSigned() || getCookie('cvToken')) navigate('/');
     }, [])
     /* eslint-enable */
 
@@ -58,12 +58,8 @@ function SignIn() {
             return null;
         }
 
-        //Se almacena el token de sesión - (Y el nombre en caso de refresh)
-        createCookie('cvToken', cvToken);
-        createCookie('uName', user.name);
         //Se actualizon los valores del context
-        setUser(user.name);
-        signInOut();
+        signIn(user.name, cvToken);
 
         //Redirección a home
         navigate('/');

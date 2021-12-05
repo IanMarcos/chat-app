@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { userContext } from '../../context/userSession';
-import { createCookie, getCookie } from './../../helpers/cookies'
+import { getCookie } from './../../helpers/cookies'
 import Alert from '../commonComponents/Alert';
 
 function SignUp() {
@@ -10,13 +10,13 @@ function SignUp() {
     //Hooks
     const [userData, setUserData] = useState({name:'', email:''});
     const [alert, setAlert] = useState({active: false, type:'', msg: ''});
-    const { isSigned, setUser, signInOut } = useContext(userContext);
+    const { isSigned, signIn } = useContext(userContext);
     const navigate = useNavigate();
 
     /* eslint-disable */
     useEffect(() => {
         //Si al cargar el componente ya hay sesión iniciada, redirige al home
-        if(isSigned || getCookie('cvToken')) navigate('/');
+        if(isSigned() || getCookie('cvToken')) navigate('/');
     }, [])
     /* eslint-enable */
 
@@ -57,14 +57,9 @@ function SignUp() {
             headers: { 'Content-Type': 'application/json' }
         });
         const { results: {msg, cvToken, uName} } = await response.json();
-        
-        //Se guarda el Jwt en el localSotrage para mantener la sesión
-        createCookie('cvToken', cvToken);
-        createCookie('uName', uName);
 
         //Se actualizon los valores del context
-        setUser(uName);
-        signInOut();
+        signIn(uName, cvToken);
 
         //Se muestra mensaje de creación exitosa
         setAlert({ active: true, type:'success', msg });

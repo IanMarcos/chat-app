@@ -1,9 +1,10 @@
-import { useEffect, useState} from 'react'
-import styles from './style.module.css';
+import { useEffect, useState } from 'react'
 import { FinalSlide } from './Slide';
-import mongo from './../../../../assets/mongo.png'
+import styles from './style.module.css';
 
 function DefaultView() {
+
+    const mongo = 'https://github.com/IanMarcos/personal-assets/blob/main/cv-app/mongo.png?raw=true';
 
     const [index, setIndex] = useState(-1);
     const [view, setView] = useState(<></>);
