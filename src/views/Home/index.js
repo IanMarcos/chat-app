@@ -3,12 +3,11 @@ import { userContext } from './../../context/userSession';
 
 import DefaultView from './components/DefaultView';
 import SignedView from './components/SignedView';
-import styles from './style.module.css';
 
 function Home() {
     const { userName } = useContext(userContext);
     return(
-        <div className={styles.center}>
+        <div className="center">
             {userName.length === 0 ? <DefaultView/> : <SignedView/>}
         </div>
     )

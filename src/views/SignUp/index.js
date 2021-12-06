@@ -71,43 +71,43 @@ function SignUp() {
     }
 
     return(
-        <div className="container">
+        <div className="container center">
             <form onSubmit={handleOnSubmit}>
                 <div className="col">
-                <div className="row">
+                    <div className="row my-2">
                         <label>
                             <input 
                                 name="name"
-                                placeholder="Nombre (No obligatorio)"
+                                placeholder="Nombre"
                                 value={userData.name}
                                 onChange={handleUserInput}
                             />   
                         </label>
                     </div>
-                    <div className="row">
+                    <div className="row my-2">
                         <label>
                             <input 
                                 name="email"
-                                placeholder="Correo"
+                                placeholder="Correo*"
                                 value={userData.email}
                                 onChange={handleUserInput}
                             />   
                         </label>
                     </div>
-                    <div className="row">
+                    <div className="row my-2">
                         <label>
                             <input
                                 name="password" 
-                                placeholder="Constraseña" 
+                                placeholder="Contraseña*" 
                                 type="password" 
                             />
                         </label>
                     </div>
-                    <div className="row">
-                        <button type="submit" className="btn btn-success"> Iniciar sesión</button>
+                    <div className="row mt-3 justify-content-center">
+                        <button type="submit" className="btn btn-success w-50"> Crear cuenta</button>
                     </div>
-                    <div className="row">
-                        <p>¿Ya tienes cuenta? <Link to ="/signin">Inicia sesión</Link></p>
+                    <div className="row my-2">
+                        <p className="text-center">¿Ya tienes cuenta? <Link to ="/signin">Inicia sesión</Link></p>
                     </div>
                     {alert.active? 
                         <Alert {...{type: alert.type, msg:alert.msg}}/>

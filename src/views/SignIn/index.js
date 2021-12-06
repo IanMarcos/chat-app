@@ -66,33 +66,33 @@ function SignIn() {
     }
 
     return(
-        <div className="container">
+        <div className="container center">
             <form onSubmit={handleOnSubmit}>
                 <div className="col">
-                    <div className="row">
+                    <div className="row my-2">
                         <label>
                             <input 
                                 name="email"
-                                placeholder="Correo"
+                                placeholder="Correo*"
                                 value={email}
                                 onChange={handleEmail}
                             />   
                         </label>
                     </div>
-                    <div className="row">
+                    <div className="row my-2">
                         <label>
                             <input
                                 name="password" 
-                                placeholder="Constraseña" 
+                                placeholder="Contraseña*" 
                                 type="password" 
                             />
                         </label>
                     </div>
-                    <div className="row">
-                        <button type="submit" className="btn btn-success"> Iniciar sesión</button>
+                    <div className="row mt-3 justify-content-center">
+                        <button type="submit" className="btn btn-success w-50"> Iniciar sesión</button>
                     </div>
-                    <div className="row">
-                        <p>¿No tienes cuenta? <Link to ="/signup">Regístrate</Link></p>
+                    <div className="row my-2">
+                        <p className="text-center">¿No tienes cuenta? <Link to ="/signup">Regístrate</Link></p>
                     </div>
                     {alert.active? 
                         <Alert {...{type: alert.type, msg:alert.msg}}/>
