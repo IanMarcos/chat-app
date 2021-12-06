@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { userContext } from '../../../context/userSession';
+import { getCookie } from '../../../helpers/cookies';
 
-import { userContext } from '../../context/userSession';
-import { getCookie } from './../../helpers/cookies';
-
-import Alert from '../commonComponents/Alert';
+import Alert from '../components/Alert';
+import FormBtn from '../components/FormBtn';
+import FormInput from '../components/FormInput';
+import LinkText from '../components/LinkText';
 
 function SignIn() {    
     
@@ -29,8 +31,9 @@ function SignIn() {
     const handleOnSubmit = async(e) => {
         e.preventDefault();
 
-        //Se extrae la contraseña del event
-        const password = e.target[1].value;
+        //Se busca el input del password en el event
+        const input = Object.values(e.target).find( el => el.attributes?.name?.nodeValue  === 'password');
+        const password = input.value;
 
         //Verificación de campos diligenciados
         if(email.length === 0 || password.length === 0){
@@ -69,31 +72,23 @@ function SignIn() {
         <div className="container center">
             <form onSubmit={handleOnSubmit}>
                 <div className="col">
-                    <div className="row my-2">
-                        <label>
-                            <input 
-                                name="email"
-                                placeholder="Correo*"
-                                value={email}
-                                onChange={handleEmail}
-                            />   
-                        </label>
-                    </div>
-                    <div className="row my-2">
-                        <label>
-                            <input
-                                name="password" 
-                                placeholder="Contraseña*" 
-                                type="password" 
-                            />
-                        </label>
-                    </div>
-                    <div className="row mt-3 justify-content-center">
-                        <button type="submit" className="btn btn-success w-50"> Iniciar sesión</button>
-                    </div>
-                    <div className="row my-2">
-                        <p className="text-center">¿No tienes cuenta? <Link to ="/signup">Regístrate</Link></p>
-                    </div>
+                    <FormInput 
+                        name="email"
+                        placeholder="Correo*"
+                        value={email}
+                        handler={handleEmail}
+                    />
+                    <FormInput 
+                        name="password"
+                        placeholder="Contraseña*"
+                        type="password"
+                    />
+                    <FormBtn text={"Iniciar sesión"} />
+                    <LinkText 
+                        text={"¿No tienes cuenta?"}
+                        hypertext={"Regístrate"}
+                        path={"/signup"}
+                    />
                     {alert.active? 
                         <Alert {...{type: alert.type, msg:alert.msg}}/>
                         : undefined
