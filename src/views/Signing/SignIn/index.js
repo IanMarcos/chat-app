@@ -47,25 +47,32 @@ function SignIn() {
             ? 'http://localhost:8080/api/auth/signin'
             : '';
 
-        const response = await fetch(url, {
-            method:'POST',
-            body: JSON.stringify({email, password}),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const { results: {err, cvToken, user} } = await response.json();
+        try {
+            const response = await fetch(url, {
+                method:'POST',
+                body: JSON.stringify({email, password}),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const { results: {err, cvToken, user} } = await response.json();
 
-        //Verificación de email y contraseña correctos
-        if(err){
-            setAlert({ active: true, type:'danger', msg:err});
-            setTimeout( () => setAlert({...alert, active:false}),3000 );
-            return null;
+            //Verificación de email y contraseña correctos
+            if(err){
+                setAlert({ active: true, type:'danger', msg:err});
+                setTimeout( () => setAlert({...alert, active:false}),3000 );
+                return null;
+            }
+            //Se actualizon los valores del context
+            signIn(user.name, cvToken);
+            //Redirección a home
+            navigate('/');
+            
+        } catch (error) {
+            setAlert({ active: true, type:'danger', msg:'Error en la conexión al servidor' });
+            //Tras tres segundo se baja la alerta, y se redirige al home
+            setTimeout(() => {
+                setAlert({...alert, active:false});
+            }, 3000);
         }
-
-        //Se actualizon los valores del context
-        signIn(user.name, cvToken);
-
-        //Redirección a home
-        navigate('/');
     }
 
     return(

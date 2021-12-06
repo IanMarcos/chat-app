@@ -40,13 +40,18 @@ export default function UserProvider( {children} ) {
         expireCookie('uName');
     }
 
+    const updateUserName = newName => {
+        setUserName(newName);
+    }
+
     return(
         <userContext.Provider value={{
             getUserInfo,
             isSigned,
             signIn,
             signOut,
-            userName
+            userName,
+            updateUserName
         }}>
             {children}
         </userContext.Provider>

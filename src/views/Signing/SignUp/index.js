@@ -55,23 +55,32 @@ function SignUp() {
             ? 'http://localhost:8080/api/users/'
             : '';
 
-        const response = await fetch(url, {
-            method:'POST',
-            body: JSON.stringify({name, email, password}),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const { results: {msg, cvToken, uName} } = await response.json();
+        try {
+            const response = await fetch(url, {
+                method:'POST',
+                body: JSON.stringify({name, email, password}),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const { results: {msg, cvToken, uName} } = await response.json();
+            //Se actualizon los valores del context
+            signIn(uName, cvToken);
+    
+            //Se muestra mensaje de creación exitosa
+            setAlert({ active: true, type:'success', msg });
+            //Tras tres segundo se baja la alerta, y se redirige al home
+            setTimeout(() => {
+                setAlert({...alert, active:false});
+                navigate('/');
+            }, 3000);
+        } catch (error) {
+            setAlert({ active: true, type:'danger', msg:'Error en la conexión al servidor' });
+            //Tras tres segundo se baja la alerta, y se redirige al home
+            setTimeout(() => {
+                setAlert({...alert, active:false});
+            }, 3000);
+        }
+        
 
-        //Se actualizon los valores del context
-        signIn(uName, cvToken);
-
-        //Se muestra mensaje de creación exitosa
-        setAlert({ active: true, type:'success', msg });
-        //Tras tres segundo se baja la alerta, y se redirige al home
-        setTimeout(() => {
-            setAlert({...alert, active:false});
-            navigate('/');
-        }, 3000);
     }
 
     return(

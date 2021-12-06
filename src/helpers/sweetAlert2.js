@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2';
+import { getCookie } from './cookies';
 
 const basicNotification = (text) => {
     Swal.fire({
@@ -18,9 +19,9 @@ const confirmationAlert = callback => {
     }).then(callback)
 }
 
-const passwordRequiredAlert = (confirmPassword, deleteUser) => {
+const passwordRequiredAlert = (callback) => {
     Swal.fire({
-        title: 'Confirme su contraseña',
+        title: 'Ingrese su contraseña',
         input: 'password',
         inputAttributes: { autocapitalize: 'off' },
         showCancelButton: true,
@@ -29,7 +30,36 @@ const passwordRequiredAlert = (confirmPassword, deleteUser) => {
         showLoaderOnConfirm: true,
         preConfirm: confirmPassword,
         allowOutsideClick: () => !Swal.isLoading()
-    }).then(deleteUser);
+    }).then(callback);
+}
+
+//Callbacks
+
+async function confirmPassword(password) {
+    const url = ( window.location.hostname.includes('localhost') )
+        ? 'http://localhost:8080/api/auth/pass'
+        : '';
+    const data = {
+        method:'POST',
+        headers: {
+            'cvtoken': getCookie('cvToken'),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({password})
+    }
+
+    try {
+        const response = await fetch(url, data);
+        const { results: {err, uid} } = await response.json();
+        if(err) {
+            basicNotification(err);
+            return false;
+        }
+        return uid;
+    } catch (error) {
+        basicNotification(error);
+        return false;
+    }
 }
 
 export {
