@@ -64,21 +64,21 @@ function MainMenu ({ changeView }) {
                 <h1 align="center">{`Bienvenido ${userName}!`}</h1>
             </div>
             <div className="row justify-content-center">¿Qué deseas hacer?</div>
-            <div className="row justify-content-center">
-                <button name="chat" className="btn btn-primary" onClick={handleViewChange}>
+            <div className="row justify-content-center my-2">
+                <button name="chat" className="btn btn-success w-75" onClick={handleViewChange}>
                     Chatear
                 </button>
             </div>
-            <div className="row justify-content-center">
-                <button name="update" className="btn btn-primary" onClick={handleViewChange}>
-                    Actualizar Datos
+            <div className="row justify-content-center my-2">
+                <button name="update" className="btn btn-primary w-75" onClick={handleViewChange}>
+                    Actualizar datos
                 </button>            
             </div>
-            <div className="row justify-content-center">
-                <button className="btn btn-danger" onClick={handleDeleteAccount}>Eliminar cuenta</button>            
+            <div className="row justify-content-center my-2">
+                <button className="btn btn-danger w-75" onClick={handleDeleteAccount}>Eliminar cuenta</button>            
             </div>
-            <div className="row justify-content-center">
-                <button className="btn btn-secondary" onClick={handleSignOut}>Salir</button>
+            <div className="row justify-content-center my-2">
+                <button className="btn btn-secondary w-75" onClick={handleSignOut}>Salir</button>
             </div>
         </div>
     )
