@@ -5,26 +5,14 @@
     animation-delay: 1s;
 }
 
-@keyframes slide-fade {
-    0% {opacity: 0;}
-    25% {opacity: 1;}
-    75% {opacity: 1;}
-    100% {opacity: 0;}
-}
-
 .finalSlide{
     width: 20rem;
     height: auto;
     opacity: 0;
-    animation-name: fade;
+    animation-name: fadeIn;
     animation-duration: 2s;
     animation-delay: 1s;
     animation-fill-mode: forwards;
-}
-
-@keyframes fade {
-    from {opacity: 0;}
-    to {opacity: 1;}
 }
 
 .greeting{
@@ -38,10 +26,41 @@
     overflow-wrap: break-word;
 }
 
+.skip{
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rgb(126, 124, 115);
+    position: fixed;
+    align-self: flex-end;
+    margin-bottom: 5vh;
+    opacity: 0;
+    animation-name: fadeIn, fadeOut;
+    animation-duration: 2s;
+    animation-delay: 4s, 20s;
+    animation-fill-mode: forwards;
+}
+
 .border{
     width: 100%;
     border-style: solid;
     border-width: 0.5rem;
     border-radius: 5px;
     border-color: rgb(230, 226, 197);
+}
+
+@keyframes slide-fade {
+    0% {opacity: 0;}
+    25% {opacity: 1;}
+    75% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
 }
