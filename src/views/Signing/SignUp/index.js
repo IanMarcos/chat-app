@@ -71,16 +71,13 @@ function SignUp() {
             setTimeout(() => {
                 setAlert({...alert, active:false});
                 navigate('/');
-            }, 3000);
+            }, 2000);
         } catch (error) {
             setAlert({ active: true, type:'danger', msg:'Error en la conexión al servidor' });
-            //Tras tres segundo se baja la alerta, y se redirige al home
             setTimeout(() => {
                 setAlert({...alert, active:false});
             }, 3000);
         }
-        
-
     }
 
     return(

@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { userContext } from './../../../../../context/userSession';
-import { getCookie, createCookie } from '../../../../../helpers/cookies';
+import { getCookie } from '../../../../../helpers/cookies';
 import { basicNotification, passwordRequiredAlert } from './../../../../../helpers/sweetAlert2';
 
 import FormBtn from '../../../../Signing/components/FormBtn';
@@ -8,7 +8,7 @@ import FormInput from '../../../../Signing/components/FormInput';
 
 function UpdateUser({ changeView }) {
     //Hooks
-    const { updateUserName } = useContext(userContext);
+    const { signIn } = useContext(userContext);
     const [userData, setUserData] = useState({name:'', email:''});
 
     //Event Handlers
@@ -61,7 +61,7 @@ function UpdateUser({ changeView }) {
                 }
                 
                 try {
-                    //Se actualiza el usuario y se renueva el token
+                    //Se actualiza el usuario en la base de datos y se solicita un nuevo token
                     const [updateResponse, tokenResponse] = await Promise.all([
                         fetch(url+`users/${uid}`, updateData),
                         fetch(url+'auth/', tokenData),
@@ -72,19 +72,16 @@ function UpdateUser({ changeView }) {
                         tokenResponse.json()
                     ]);
                     
-                    // const response = await fetch(url+`users/${uid}`, updateData);
-                    // const { results: {err, updatedUser} } = await response.json();
                     if(err) {
                         basicNotification(err);
                         return
                     }
                     
-                    updateUserName(updatedUser.name);
-                    createCookie('cvToken', cvToken);
-                    createCookie('uName', updatedUser.name);
+                    //Se actualizan los datos de sesión
+                    signIn(updatedUser.name, cvToken);
 
                     basicNotification(`El usuario ${updatedUser.name} con correo ${updatedUser.email} ha sido Actualizado`);
-                    setTimeout(() => changeView('main'), 2500);
+                    setTimeout(() => changeView('main'), 1500);
 
                 } catch (error) {
                     basicNotification('Error en la conexión. Intenta en unos minutos');
