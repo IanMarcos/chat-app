@@ -1,17 +1,13 @@
-import { useContext, useState } from 'react';
-import { userContext } from './../../../../context/userSession';
+import { useState } from 'react';
 import Chat from './components/Chat';
 import MainMenu from './components/MainMenu.js';
 import UpdateUser from './components/UpdateUser';
 
 function SignedView() {
 
-    const { userName, updateUserName, signOut } = useContext(userContext);
-
-    const mainMenuProps = {userName, signOut, changeView};
-    const mainMenu = <MainMenu {...mainMenuProps}/>;
+    const mainMenu = <MainMenu changeView={changeView}/>;
     const chat = <Chat/>;
-    const updateUser = <UpdateUser changeView={changeView} updateUserName={updateUserName}/>
+    const updateUser = <UpdateUser changeView={changeView}/>
     
     const [view, setView] = useState(mainMenu);
 

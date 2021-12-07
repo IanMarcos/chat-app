@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import { getCookie } from '../../../../../helpers/cookies';
-
+import { useState, useContext } from 'react';
+import { userContext } from './../../../../../context/userSession';
+import { getCookie, createCookie } from '../../../../../helpers/cookies';
 import { basicNotification, passwordRequiredAlert } from './../../../../../helpers/sweetAlert2';
+
 import FormBtn from '../../../../Signing/components/FormBtn';
 import FormInput from '../../../../Signing/components/FormInput';
 
-function UpdateUser({ changeView, updateUserName }) {
+function UpdateUser({ changeView }) {
     //Hooks
+    const { updateUserName } = useContext(userContext);
     const [userData, setUserData] = useState({name:'', email:''});
 
     //Event Handlers
@@ -35,32 +37,52 @@ function UpdateUser({ changeView, updateUserName }) {
         const updateUser = async({value: uid}) => {
             if (uid) {
                 const url = ( window.location.hostname.includes('localhost') )
-                    ? `http://localhost:8080/api/users/${uid}`
+                    ? `http://localhost:8080/api/`
                     : '';
 
-                const data = {};
-                if( name.length !== 0) data.name = name;
-                if( email.length !== 0) data.email = email;
-                if( password.length !== 0) data.password = password;
+                const updateBodyData = {};
+                if( name.length !== 0) updateBodyData.name = name;
+                if( email.length !== 0) updateBodyData.email = email;
+                if( password.length !== 0) updateBodyData.password = password;
                 
-                const fetchData = {
-                    method:'Put',
-                    body: JSON.stringify(data),
+                const updateData = {
+                    method:'PUT',
+                    body: JSON.stringify(updateBodyData),
                     headers: {
                         'Content-Type': 'application/json',
                         'cvtoken': getCookie('cvToken')
                     }
                 }
+                const tokenData = {
+                    method:'POST',
+                    headers: {
+                        'cvtoken': getCookie('cvToken')
+                    }
+                }
                 
                 try {
-                    const response = await fetch(url, fetchData);
-                    const { results: {err, updatedUser} } = await response.json();
+                    //Se actualiza el usuario y se renueva el token
+                    const [updateResponse, tokenResponse] = await Promise.all([
+                        fetch(url+`users/${uid}`, updateData),
+                        fetch(url+'auth/', tokenData),
+                    ]);
+
+                    const [{results: {err, updatedUser}}, {results: {cvToken}}] = await Promise.all([
+                        updateResponse.json(),
+                        tokenResponse.json()
+                    ]);
+                    
+                    // const response = await fetch(url+`users/${uid}`, updateData);
+                    // const { results: {err, updatedUser} } = await response.json();
                     if(err) {
                         basicNotification(err);
                         return
                     }
                     
                     updateUserName(updatedUser.name);
+                    createCookie('cvToken', cvToken);
+                    createCookie('uName', updatedUser.name);
+
                     basicNotification(`El usuario ${updatedUser.name} con correo ${updatedUser.email} ha sido Actualizado`);
                     setTimeout(() => changeView('main'), 2500);
 

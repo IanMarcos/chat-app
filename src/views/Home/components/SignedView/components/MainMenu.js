@@ -1,8 +1,12 @@
+import { useContext } from 'react';
+import { userContext } from './../../../../../context/userSession';
 import { getCookie } from '../../../../../helpers/cookies';
 import { basicNotification, confirmationAlert, passwordRequiredAlert } from '../../../../../helpers/sweetAlert2';
 
-function MainMenu ( {userName, changeView, signOut} ) {
+function MainMenu ({ changeView }) {
 
+    const { userName, signOut } = useContext(userContext);
+    
     const handleViewChange = ({target: {name}}) => {
         changeView(name);
     }
