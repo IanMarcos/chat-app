@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Chat from './components/Chat';
-import MainMenu from './components/MainMenu.js';
+import Chat from './components/Chat/';
+import MainMenu from './components/MainMenu';
 import UpdateUser from './components/UpdateUser';
 
 function SignedView() {
