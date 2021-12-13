@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { userContext } from './../../../../../context/userSession';
 import { getCookie } from '../../../../../helpers/cookies';
+import { getApiUrl } from '../../../../../helpers/urlGetter';
 import { basicNotification, passwordRequiredAlert } from './../../../../../helpers/sweetAlert2';
 
 import FormBtn from '../../../../Signing/components/FormBtn';
@@ -36,10 +37,6 @@ function UpdateUser({ changeView }) {
 
         const updateUser = async({value: uid}) => {
             if (uid) {
-                const url = ( window.location.hostname.includes('localhost') )
-                    ? `http://localhost:8080/api/`
-                    : '';
-
                 const updateBodyData = {};
                 if( name.length !== 0) updateBodyData.name = name;
                 if( email.length !== 0) updateBodyData.email = email;
@@ -63,8 +60,8 @@ function UpdateUser({ changeView }) {
                 try {
                     //Se actualiza el usuario en la base de datos y se solicita un nuevo token
                     const [updateResponse, tokenResponse] = await Promise.all([
-                        fetch(url+`users/${uid}`, updateData),
-                        fetch(url+'auth/', tokenData),
+                        fetch(getApiUrl(`users/${uid}`), updateData),
+                        fetch(getApiUrl('auth/'), tokenData),
                     ]);
 
                     const [{results: {err, updatedUser}}, {results: {cvToken}}] = await Promise.all([

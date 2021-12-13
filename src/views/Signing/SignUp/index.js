@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userContext } from '../../../context/userSession';
 import { getCookie } from '../../../helpers/cookies';
+import { getApiUrl } from '../../../helpers/urlGetter';
 
 import Alert from '../components/Alert';
 import FormBtn from '../components/FormBtn';
@@ -51,12 +52,8 @@ function SignUp() {
         }
 
         //Llamado a la API
-        const url = ( window.location.hostname.includes('localhost') )
-            ? 'http://localhost:8080/api/users/'
-            : '';
-
         try {
-            const response = await fetch(url, {
+            const response = await fetch(getApiUrl('users/'), {
                 method:'POST',
                 body: JSON.stringify({name, email, password}),
                 headers: { 'Content-Type': 'application/json' }

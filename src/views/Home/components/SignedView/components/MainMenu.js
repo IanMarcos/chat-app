@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { userContext } from './../../../../../context/userSession';
 import { getCookie } from '../../../../../helpers/cookies';
 import { basicNotification, confirmationAlert, passwordRequiredAlert } from '../../../../../helpers/sweetAlert2';
+import { getApiUrl } from '../../../../../helpers/urlGetter';
 
 function MainMenu ({ changeView }) {
 
@@ -15,10 +16,6 @@ function MainMenu ({ changeView }) {
 
         const deleteUser = async({value: uid}) => {
             if (uid) {
-                const url = ( window.location.hostname.includes('localhost') )
-                    ? `http://localhost:8080/api/users/${uid}`
-                    : '';
-
                 const data = {
                     method:'DELETE',
                     headers: {
@@ -27,7 +24,7 @@ function MainMenu ({ changeView }) {
                 }
                 
                 try {
-                    const response = await fetch(url, data);
+                    const response = await fetch(getApiUrl(`users/${uid}`), data);
                     const { results: {err, deletedUser} } = await response.json();
                     if(err) {
                         basicNotification(err);
