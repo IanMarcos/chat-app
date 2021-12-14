@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import Chat from './components/Chat/';
+import ChatHub from './components/ChatHub';
 import MainMenu from './components/MainMenu';
 import UpdateUser from './components/UpdateUser';
 
 function SignedView() {
 
     const mainMenu = <MainMenu changeView={changeView}/>;
-    const chat = <Chat/>;
+    const chatHub = <ChatHub/>;
     const updateUser = <UpdateUser changeView={changeView}/>
     
     const [view, setView] = useState(mainMenu);
@@ -14,7 +14,7 @@ function SignedView() {
     function changeView(name) {
  
         if(name === 'chat'){
-            setView( chat );
+            setView( chatHub );
         } else if (name === 'update') {
             setView( updateUser );
         } else {
@@ -22,11 +22,7 @@ function SignedView() {
         }    
     }
 
-    return(
-        <>
-            {view}
-        </>
-    )
+    return(<>{view}</>)
 }
 
 export default SignedView;

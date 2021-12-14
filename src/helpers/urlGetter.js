@@ -6,4 +6,11 @@ const getApiUrl = (append = '') => {
     return url+append;
 }
 
-export { getApiUrl };
+const getServerUrl = () => {
+    if( window.location.hostname.includes('localhost') ){
+        return 'http://localhost:8080/'
+    } 
+    return '';
+}
+
+export { getApiUrl, getServerUrl };
