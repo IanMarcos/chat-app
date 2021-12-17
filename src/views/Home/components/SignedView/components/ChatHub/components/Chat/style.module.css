@@ -1,0 +1,13 @@
+.sender{
+    font-weight: bold;
+    margin-left: 1.2rem;
+}
+
+.msgBubble{
+    background-color: rgba(100, 221, 63, 0.253);
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    height: 2.1rem;
+    border-style: hidden;
+    border-radius: 0.9rem;
+}
