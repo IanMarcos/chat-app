@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Message from './Message';
 
-function Chat({ user, messages, room, sendMsg }) {
+function Chat({ user, messages, room, sendMsg, handleReturn }) {
 
     const [msg, setMsg] = useState('');
 
@@ -27,12 +27,12 @@ function Chat({ user, messages, room, sendMsg }) {
                     {user}
                 </h2>
             </div>
-            <div className={`row h-100 overflow-auto`}>
+            <div className="row h-100 overflow-auto">
                     <div className="d-flex flex-column-reverse">
                         {renderMessages()}
                     </div>
             </div>
-            <div className="row mt-3 mb-5">
+            <div className="row mt-3">
                 <div className="col px-0">
                     <input
                         className="h-100 w-100"
@@ -44,6 +44,10 @@ function Chat({ user, messages, room, sendMsg }) {
                 <div className="col-3 px-0">
                     <button className="btn btn-success w-100" onClick={handleSendMsg}>Enviar</button>
                 </div>
+            </div>
+            <div className="row justify-content-center">
+                <button className="btn btn-primary my-1 mx-2 w-25" onClick={handleReturn}>Volver a chats</button>
+                <button className="btn btn-primary my-1 mx-2 w-25" onClick={()=>window.location.reload()}>Volver al inicio</button>
             </div>
         </div>
     )

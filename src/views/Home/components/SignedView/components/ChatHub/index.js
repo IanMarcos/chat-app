@@ -56,24 +56,35 @@ function ChatHub() {
         socket.current.emit(
             'join-room',                            //Evento
             {user1: me._id, user2: partner._id},    //Payload
-            roomIndex => {                          //Callback
+            (roomIndex) => {                        //Callback
                 setRoom(roomIndex);
+                /*Cargar los mensajes de la sala se hace aquí porque setRoom no es síncrono,
+                entonces room es undefined para el momento en el que se llega a la próxima instrucción.
+                Un await no ayuda*/
+                socket.current.emit(
+                    'get-room-messages',
+                    {roomIndex},
+                    msgs => setMessages(msgs)
+                );
             }
         );
-        //Actualiza el estado de partner para tener su nombre y que cambie la pantalla
         setPartner(partner);
     }
 
     const handleSendMsg = msg => {
         if(msg.length === 0) return;
-        // socket.current.emit('send-message', {uid:partner._id , msg})
+        socket.current.emit('send-message', {uid:partner._id , msg, room});
+    }
+
+    const handleReturn = () => {
+        setPartner({});
     }
     
     return(
         <>
             {!partner._id 
                 ?<UserList {...{users}} {...{handleUserSelect}}/>
-                :<Chat user={partner.name} {...{messages}} {...{room}} sendMsg={handleSendMsg}/>
+                :<Chat user={partner.name} {...{messages}} {...{room}} sendMsg={handleSendMsg} {...{handleReturn}}/>
             }
         </>
     );
