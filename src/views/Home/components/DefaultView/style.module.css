@@ -36,7 +36,7 @@
     opacity: 0;
     animation-name: fadeIn, fadeOut;
     animation-duration: 2s;
-    animation-delay: 4s, 20s;
+    animation-delay: 6s, 18s;
     animation-fill-mode: forwards;
 }
 

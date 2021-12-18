@@ -9,7 +9,7 @@ import { getServerUrl } from '../../../../../../helpers/urlGetter';
 import Chat from './components/Chat';
 import UserList from './components/UserList';
 
-function ChatHub() {
+function ChatHub( {changeView} ) {
 
     const socket = useRef(null);
     const [users, SetUsers] = useState([]);
@@ -79,14 +79,23 @@ function ChatHub() {
     const handleReturn = () => {
         setPartner({});
     }
+
+    const handleExit = () => {
+        changeView('main');
+    }
     
     return(
-        <>
+        <div className="d-inline">
             {!partner._id 
                 ?<UserList {...{users}} {...{handleUserSelect}}/>
                 :<Chat user={partner.name} {...{messages}} {...{room}} sendMsg={handleSendMsg} {...{handleReturn}}/>
             }
-        </>
+            <div className="d-flex justify-content-center">
+                <button className="btn btn-secondary mt-4 w-25" onClick={handleExit}>
+                    Volver
+                </button>
+            </div>
+        </div>
     );
 }
 

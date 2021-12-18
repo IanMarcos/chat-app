@@ -5,9 +5,9 @@ import UpdateUser from './components/UpdateUser';
 
 function SignedView() {
 
-    const mainMenu = <MainMenu changeView={changeView}/>;
-    const chatHub = <ChatHub/>;
-    const updateUser = <UpdateUser changeView={changeView}/>
+    const mainMenu = <MainMenu {...{changeView}}/>;
+    const chatHub = <ChatHub {...{changeView}}/>;
+    const updateUser = <UpdateUser {...{changeView}}/>
     
     const [view, setView] = useState(mainMenu);
 
