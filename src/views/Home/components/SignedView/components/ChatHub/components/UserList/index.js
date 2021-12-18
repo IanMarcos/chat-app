@@ -3,7 +3,7 @@ import { userContext } from '../../../../../../../../context/userSession';
 import styles from './style.module.css';
 // import UserListItem from "../UserListItem";
 
-function UserList( {users = [], handler} ) {
+function UserList( {users = [], handleUserSelect} ) {
 
     const { userName } = useContext(userContext);
     
@@ -19,7 +19,7 @@ function UserList( {users = [], handler} ) {
                         key={_id}
                         value={_id}
                         className={styles.btnTrasnparent}
-                        onClick={handler}
+                        onClick={handleUserSelect}
                     >
                         {name}
                     </button>

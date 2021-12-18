@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import { createCookie, getCookie, expireCookie } from '../../helpers/cookies';
+import { getApiUrl } from '../../helpers/urlGetter';
 
 export const userContext = createContext();
 
@@ -9,19 +10,19 @@ export default function UserProvider( {children} ) {
     const [userName, setUserName] = useState(initialName);
 
     const getUserInfo = async() => {
-        const url = ( window.location.hostname.includes('localhost') )
-        ? 'http://localhost:8080/api/auth/signin'
-        : '';
         const cvToken = getCookie('cvToken');
 
-        const response = await fetch(url, {
+        const response = await fetch(getApiUrl('auth/'), {
             method:'POST',
             headers: {
                 'cvtoken': cvToken
             }
         })
-        const { results } = await response.json();
-        console.log(results);
+        const { results: {err, cvToken: token, user} } = await response.json();
+
+        if(err) return null;
+        signIn(user.name, token);
+        return(user);
     }
     
     const isSigned = () => {

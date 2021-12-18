@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Message from './Message';
 
-function Chat({ user, messages, sendMsg }) {
+function Chat({ user, messages, room, sendMsg }) {
 
     const [msg, setMsg] = useState('');
 
@@ -9,7 +9,7 @@ function Chat({ user, messages, sendMsg }) {
         setMsg(value);
     }
 
-    const handleMsgSend = () => {
+    const handleSendMsg = () => {
         sendMsg(msg);
         setMsg('');
     }
@@ -42,7 +42,7 @@ function Chat({ user, messages, sendMsg }) {
                     />
                 </div>
                 <div className="col-3 px-0">
-                    <button className="btn btn-success w-100" onClick={handleMsgSend}>Enviar</button>
+                    <button className="btn btn-success w-100" onClick={handleSendMsg}>Enviar</button>
                 </div>
             </div>
         </div>

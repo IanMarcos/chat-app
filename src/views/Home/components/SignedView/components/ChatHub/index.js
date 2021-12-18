@@ -1,8 +1,11 @@
 import { io } from 'socket.io-client';
-import { useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
+import { userContext } from '../../../../../../context/userSession';
+
 import { getCookie } from '../../../../../../helpers/cookies';
 import { basicNotification } from '../../../../../../helpers/sweetAlert2';
 import { getServerUrl } from '../../../../../../helpers/urlGetter';
+
 import Chat from './components/Chat';
 import UserList from './components/UserList';
 
@@ -11,12 +14,14 @@ function ChatHub() {
     const socket = useRef(null);
     const [users, SetUsers] = useState([]);
     const [partner, setPartner] = useState({});
+    const [room, setRoom]= useState(-1);
     const [messages, setMessages] = useState([]);
+    const { getUserInfo } = useContext(userContext)
     
     useEffect(() => {
         configSockets();
         return () => {
-            socket.current.disconnect();
+            socket?.current.disconnect();
         }
     }, []);
 
@@ -42,21 +47,33 @@ function ChatHub() {
         }
     }
 
-    const handleUserSelect = ({target: {value}}) => {
-        const target = Object.values(users).find(user => user._id === value)
-        setPartner(target);
+    const handleUserSelect = async({target: {value}}) => {
+        //Obtener los IdDs de ambos participantes del chat
+        const me = await getUserInfo();
+        const partner = Object.values(users).find(user => user._id === value);
+
+        //Crear la sala en el backend y conectar a los dos usuarios
+        socket.current.emit(
+            'join-room',                            //Evento
+            {user1: me._id, user2: partner._id},    //Payload
+            roomIndex => {                          //Callback
+                setRoom(roomIndex);
+            }
+        );
+        //Actualiza el estado de partner para tener su nombre y que cambie la pantalla
+        setPartner(partner);
     }
 
     const handleSendMsg = msg => {
         if(msg.length === 0) return;
-        socket.current.emit('send-message', {uid:partner._id , msg})
+        // socket.current.emit('send-message', {uid:partner._id , msg})
     }
     
     return(
         <>
             {!partner._id 
-                ?<UserList users={users} handler={handleUserSelect}/>
-                :<Chat user={partner.name} messages={messages} sendMsg={handleSendMsg}/>
+                ?<UserList {...{users}} {...{handleUserSelect}}/>
+                :<Chat user={partner.name} {...{messages}} {...{room}} sendMsg={handleSendMsg}/>
             }
         </>
     );

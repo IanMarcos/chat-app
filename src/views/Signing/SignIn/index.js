@@ -78,6 +78,7 @@ function SignIn() {
                 <div className="col">
                     <FormInput 
                         name="email"
+                        type="email"
                         placeholder="Correo*"
                         value={email}
                         handler={handleEmail}

@@ -104,6 +104,7 @@ function UpdateUser({ changeView }) {
                     />
                     <FormInput 
                         name="email"
+                        type="email"
                         placeholder="Nuevo correo"
                         value={userData.email}
                         handler={handleUserInput}
