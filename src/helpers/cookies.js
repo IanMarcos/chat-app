@@ -23,7 +23,7 @@ const getCookie = name => {
 }
 
 const expireCookie = name => {
-    //La fecha de expiración del cookie sa actualiza a un minuto en el pasado
+    //La fecha de expiración del cookie sa actualiza a un minuto en el pasado.
     const cookie = getCookie(name);
     if(!cookie) return;
     createCookie(name, '',-1);
