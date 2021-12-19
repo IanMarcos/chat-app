@@ -48,7 +48,7 @@ function ChatHub( {changeView} ) {
     }
 
     const handleUserSelect = async({target: {value}}) => {
-        //Obtener los IdDs de ambos participantes del chat
+        //Obtener los IdS de ambos participantes del chat
         const me = await getUserInfo();
         const partner = Object.values(users).find(user => user._id === value);
 
@@ -88,7 +88,7 @@ function ChatHub( {changeView} ) {
         <div className="d-inline">
             {!partner._id 
                 ?<UserList {...{users}} {...{handleUserSelect}}/>
-                :<Chat user={partner.name} {...{messages}} {...{room}} sendMsg={handleSendMsg} {...{handleReturn}}/>
+                :<Chat user={partner.name} {...{messages}} sendMsg={handleSendMsg} {...{handleReturn}}/>
             }
             <div className="d-flex justify-content-center">
                 <button className="btn btn-secondary mt-4 w-25" onClick={handleExit}>

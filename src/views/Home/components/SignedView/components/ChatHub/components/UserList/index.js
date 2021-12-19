@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { userContext } from '../../../../../../../../context/userSession';
 import styles from './style.module.css';
-// import UserListItem from "../UserListItem";
 
 function UserList( {users = [], handleUserSelect} ) {
 

@@ -1,7 +1,8 @@
 import Swal from 'sweetalert2';
 import { getCookie } from './cookies';
+import { getApiUrl } from './urlGetter';
 
-const basicNotification = (text) => {
+const basicNotification = text => {
     Swal.fire({
         title: text
     })
@@ -19,7 +20,7 @@ const confirmationAlert = callback => {
     }).then(callback)
 }
 
-const passwordRequiredAlert = (callback) => {
+const passwordRequiredAlert = callback => {
     Swal.fire({
         title: 'Ingrese su contraseña',
         input: 'password',
@@ -36,9 +37,6 @@ const passwordRequiredAlert = (callback) => {
 //Callbacks
 
 async function confirmPassword(password) {
-    const url = ( window.location.hostname.includes('localhost') )
-        ? 'http://localhost:8080/api/auth/pass'
-        : '';
     const data = {
         method:'POST',
         headers: {
@@ -49,7 +47,7 @@ async function confirmPassword(password) {
     }
 
     try {
-        const response = await fetch(url, data);
+        const response = await fetch(getApiUrl('auth/pass'), data);
         const { results: {err, uid} } = await response.json();
         if(err) {
             basicNotification(err);

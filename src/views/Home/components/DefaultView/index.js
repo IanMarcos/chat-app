@@ -7,15 +7,18 @@ function DefaultView() {
 
     const [index, setIndex] = useState(0);
     const [view, setView] = useState(<></>);
-    
-    const mongo = 'https://github.com/IanMarcos/personal-assets/blob/main/cv-app/mongo.png?raw=true';
+    //Imagenes de la presentación
+    const me = 'https://github.com/IanMarcos/personal-assets/blob/main/cv-app/ME.png?raw=true';
+    const rn = 'https://github.com/IanMarcos/personal-assets/blob/main/cv-app/RN.png?raw=true';
+    //Contenidos de la presentaciób
     const contents = [
         'Hola!',
         'Esta App fue hecha con el stack MERN',
-        mongo,
-        mongo,
+        me,
+        rn,
         'Para empezar, inicia sesión o regístrate'
     ];
+    //Estilos que se le aplica a cada diapositiva
     const textStyles = [styles.greeting, styles.longText, '', '', styles.longText];
     
     const renderSlide = () => {

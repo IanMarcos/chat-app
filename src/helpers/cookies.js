@@ -1,5 +1,6 @@
 
 const createCookie = (name, value, expiration=15) => {
+    //El cookie expiara en la fecha actual más la expiration en minutos
     const date = new Date();
     date.setTime(date.getTime()+(expiration*60*1000))
     let string = `${name}=${value}; expires=${date.toGMTString()}`;
@@ -22,6 +23,7 @@ const getCookie = name => {
 }
 
 const expireCookie = name => {
+    //La fecha de expiración del cookie sa actualiza a un minuto en el pasado
     const cookie = getCookie(name);
     if(!cookie) return;
     createCookie(name, '',-1);

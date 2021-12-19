@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Message from './Message';
 
-function Chat({ user, messages, room, sendMsg, handleReturn }) {
+function Chat({ user, messages, sendMsg, handleReturn }) {
 
     const [msg, setMsg] = useState('');
 
