@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Message from './Message';
+import styles from './style.module.css';
 
 function Chat({ user, messages, sendMsg, handleReturn }) {
 
@@ -33,7 +34,7 @@ function Chat({ user, messages, sendMsg, handleReturn }) {
                     </div>
             </div>
             <div className="row mt-3">
-                <div className="col px-0">
+                <div className={`${styles.w85} px-0`}>
                     <input
                         className="h-100 w-100"
                         placeholder="Mensaje"
@@ -41,11 +42,11 @@ function Chat({ user, messages, sendMsg, handleReturn }) {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div className="col-3 px-0">
-                    <button className="btn btn-success w-100" onClick={handleSendMsg}>Enviar</button>
+                <div className={`${styles.w15} px-0`}>
+                    <button className="btn btn-success w-100" onClick={handleSendMsg}>{"►"}</button>
                 </div>
             </div>
-            <div className="row justify-content-center">
+            <div className="row justify-content-center mt-4">
                 <button className="btn btn-primary my-1 mx-2 w-25" onClick={handleReturn}>Volver a chats</button>
                 <button className="btn btn-primary my-1 mx-2 w-25" onClick={()=>window.location.reload()}>Volver al inicio</button>
             </div>

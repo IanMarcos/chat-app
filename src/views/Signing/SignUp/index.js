@@ -48,7 +48,7 @@ function SignUp() {
         if(email.length === 0 || password.length === 0){
             setAlert({ active: true, type:'warning', msg:'Correo y contraseña son obligatorios' });
             setTimeout( () => setAlert({...alert, active:false}),3000 );
-            return null;
+            return;
         }
 
         //Llamado a la API
@@ -58,7 +58,13 @@ function SignUp() {
                 body: JSON.stringify({name, email, password}),
                 headers: { 'Content-Type': 'application/json' }
             });
-            const { results: {msg, cvToken, uName} } = await response.json();
+            const { results: {msg, cvToken, uName, err} } = await response.json();
+
+            if(err){
+                setAlert({ active: true, type:'danger', msg: 'Correo inválido' });
+                return;
+            }
+
             //Se actualizon los valores del context
             signIn(uName, cvToken);
     
@@ -98,7 +104,7 @@ function SignUp() {
                         placeholder="Contraseña*"
                         type="password"
                     />
-                    <FormBtn text={"Iniciar sesión"} />
+                    <FormBtn text={"Registrase"} />
                     <LinkText 
                         text={"¿Ya tienes cuenta?"}
                         hypertext={"Inicia sesión"}

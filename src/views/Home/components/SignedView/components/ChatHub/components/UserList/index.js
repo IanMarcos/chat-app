@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { userContext } from '../../../../../../../../context/userSession';
 import styles from './style.module.css';
 
-function UserList( {users = [], handleUserSelect} ) {
+function UserList( {users = [], handleUserSelect, handleExit} ) {
 
     const { userName } = useContext(userContext);
     
@@ -32,7 +32,14 @@ function UserList( {users = [], handleUserSelect} ) {
             <div className="row mb-4">
                 <h1 className="text-center">¿Con que usuario deseas chater?</h1>
             </div>
+            
             {renderUsers()}
+
+            <div className="d-flex justify-content-center">
+                <button className="btn btn-secondary mt-4 w-25" onClick={handleExit}>
+                    Volver
+                </button>
+            </div>
         </div>
     )
 }

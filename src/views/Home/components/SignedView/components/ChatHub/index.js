@@ -85,16 +85,11 @@ function ChatHub( {changeView} ) {
     }
     
     return(
-        <div className="d-inline">
+        <div className="d-inline w-75">
             {!partner._id 
-                ?<UserList {...{users}} {...{handleUserSelect}}/>
+                ?<UserList {...{users}} {...{handleUserSelect}} {...{handleExit}}/>
                 :<Chat user={partner.name} {...{messages}} sendMsg={handleSendMsg} {...{handleReturn}}/>
             }
-            <div className="d-flex justify-content-center">
-                <button className="btn btn-secondary mt-4 w-25" onClick={handleExit}>
-                    Volver
-                </button>
-            </div>
         </div>
     );
 }

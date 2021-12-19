@@ -10,4 +10,13 @@
     height: 2.1rem;
     border-style: hidden;
     border-radius: 0.9rem;
+    word-wrap:break-word;
+}
+
+.w85{
+    width: 85%;
+}
+
+.w15{
+    width: 15%;
 }
