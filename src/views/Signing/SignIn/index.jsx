@@ -12,6 +12,7 @@ import LinkText from "views/Signing/components/LinkText";
 function SignIn() {
   //Hooks
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState({ active: false, type: "", msg: "" });
   const { isSigned, signIn } = useContext(userContext);
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ function SignIn() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     //Se busca el input del password en el event
     const input = Object.values(e.target).find(
@@ -79,6 +81,8 @@ function SignIn() {
       setTimeout(() => {
         setAlert({ ...alert, active: false });
       }, 3000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -98,7 +102,18 @@ function SignIn() {
             placeholder="Contraseña*"
             type="password"
           />
-          <FormBtn text={"Iniciar sesión"} />
+          <FormBtn
+            text={
+              isLoading ? (
+                <div class="spinner-border text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              ) : (
+                "Iniciar sesión"
+              )
+            }
+            isDisabled={isLoading}
+          />
           <LinkText
             text={"¿No tienes cuenta?"}
             hypertext={"Regístrate"}

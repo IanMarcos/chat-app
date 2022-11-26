@@ -13,6 +13,7 @@ function SignUp() {
   //Hooks
   const [userData, setUserData] = useState({ name: "", email: "" });
   const [alert, setAlert] = useState({ active: false, type: "", msg: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const { isSigned, signIn } = useContext(userContext);
   const navigate = useNavigate();
 
@@ -36,6 +37,7 @@ function SignUp() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const { name, email } = userData;
 
@@ -91,6 +93,8 @@ function SignUp() {
       setTimeout(() => {
         setAlert({ ...alert, active: false });
       }, 3000);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -115,7 +119,18 @@ function SignUp() {
             placeholder="Contraseña*"
             type="password"
           />
-          <FormBtn text={"Registrarse"} />
+          <FormBtn
+            text={
+              isLoading ? (
+                <div class="spinner-border text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              ) : (
+                "Registrarse"
+              )
+            }
+            isDisabled={isLoading}
+          />
           <LinkText
             text={"¿Ya tienes cuenta?"}
             hypertext={"Inicia sesión"}
