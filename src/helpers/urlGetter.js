@@ -1,16 +1,8 @@
-const getApiUrl = (append = '') => {
-    const url = ( window.location.hostname.includes('localhost') )
-        ? 'http://localhost:8080/api/'
-        : 'https://cv-webserver.herokuapp.com/api/';
-    
-    return url+append;
-}
+const API_URL = import.meta.env.VITE_API_URL;
 
-const getServerUrl = () => {
-    if( window.location.hostname.includes('localhost') ){
-        return 'http://localhost:8080/'
-    } 
-    return 'https://cv-webserver.herokuapp.com/';
-}
+const getApiUrl = (append = '') => `${API_URL}/api/${append}`;
+
+const getServerUrl = () => API_URL + '/';
+
 
 export { getApiUrl, getServerUrl };
